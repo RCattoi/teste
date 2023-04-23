@@ -7,32 +7,29 @@ import useBrowserLocation from './Hooks/useBrowserLocation.js';
 const Search = () => {
   const [location, setLocation] = useState(null);
   const [placeholderCity, setPlaceholderCity] = useState(null);
-  const [locationError, setLocationError] = useState(false);
+  const [LocationEnable, setLocationEnable] = useState(false);
   const [data, setData] = useState(null);
 
   const { request } = useFetch();
 
-  // useEffect(() => {
-  //   const successCallback = (position) => {
-  //     setLocation({
-  //       latitude: position.coords.latitude,
-  //       longitude: position.coords.longitude,
-  //     });
-  //     setLocationError(false);
-  //   };
-
-  //   const errorCallback = (error) => {
-  //     setLocationError(true);
-  //   };
-  //   navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-  // }, []);
-
-  navigator.geolocation.getCurrentPosition((position) =>
-    console.log(position.coords.latitude)
-  );
 
   useEffect(() => {
-    const getWeatherForecast = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        });
+      }, error => {
+        setLocationEnable(true)
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
+  useEffect(() => {
+    const setDefaultWeatherForecast = async () => {
       if (location) {
         const { latitude, longitude } = location;
         const geoLocationResponse = await request(
@@ -51,19 +48,19 @@ const Search = () => {
         setData(weatherForecastResponse.json);
       }
     };
-    getWeatherForecast();
+    setDefaultWeatherForecast();
   }, [location]);
 
   return (
     <>
-      {locationError && (
+      {LocationEnable && (
         <div className={style.search__erro}>
           Para melhor Utilizar o serviço, ative a geolocalização!
         </div>
       )}
       <input
         placeholder={placeholderCity}
-        onClick={() => setLocationError(false)}
+        onClick={() => setLocationEnable(false)}
         className={style.search__bar}
       ></input>
       <Content data={data} />
