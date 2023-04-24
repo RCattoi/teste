@@ -12,19 +12,21 @@ const Search = () => {
 
   const { request } = useFetch();
 
-
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        });
-      }, error => {
-        setLocationEnable(true)
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          setLocationEnable(true);
+        }
+      );
     } else {
-      console.log("Geolocation is not supported by this browser.");
+      console.log('Geolocation is not supported by this browser.');
     }
   }, []);
 
@@ -43,7 +45,7 @@ const Search = () => {
           .toLowerCase();
         const apiKey = '772920597e4ec8f00de8d376dfb3f094';
         const weatherForecastResponse = await request(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${formattedGeoLocationCity}&appid=${apiKey}`
+          `https://api.openweathermap.org/data/2.5/forecast?q=${formattedGeoLocationCity}&units=metric&appid=${apiKey}`
         );
         setData(weatherForecastResponse.json);
       }

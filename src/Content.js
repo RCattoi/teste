@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Content = (props) => {
-  const todayFullDate = props?.data?.list[0].dt_txt;
+  const [forecast, setForecast] = useState(null);
+
+  useEffect(() => {
+    const todayFullDate = props?.data?.list[0].dt_txt;
     const filteredDays = props?.data?.list.filter((element) => {
-      const nextThreeDays = getNextThreeDays();
+      const nextThreeDays = getNextThreeDays(todayFullDate);
       return nextThreeDays.includes(element.dt_txt);
     });
-  console.log(filteredDays)
-  function getNextThreeDays() {
+    setForecast(filteredDays);
+  }, [props]);
+  function getNextThreeDays(todayFullDate) {
     let arrNextThreeDays = [];
     for (let i = 0; i < 3; i++) {
       let yearMonth = todayFullDate.split('-').slice(0, 2);
@@ -21,14 +25,21 @@ const Content = (props) => {
     }
     return arrNextThreeDays;
   }
-
-    return (
-      <>
-        <div>a</div>
-        <div>b</div>
-        <div>c</div>
-      </>
-    );
+  console.log(forecast);
+  return (
+    <>
+      {forecast && (
+        <>
+          <div>
+            {forecast[0].main.temp} -{forecast[0].main.pressure} -
+            {forecast[0].main.humidity}
+          </div>
+          <div>{forecast[1].main.temp}</div>
+          <div>{forecast[2].main.temp}</div>
+        </>
+      )}
+    </>
+  );
 };
 
 export default Content;
