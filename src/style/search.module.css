@@ -5,6 +5,7 @@
   height: 2rem;
   font-size: 1.5rem;
   padding: 0.55rem;
+  max-width: 1000px;
 }
 
 .search__bar:focus {
