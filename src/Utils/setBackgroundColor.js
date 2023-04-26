@@ -1,4 +1,4 @@
-export const setBackgroundColor = (forecast) => {
+export const setBackgroundColor = (forecast, isCelsius) => {
   let forecastDivColor = {};
   if (!forecast) {
     forecastDivColor = {
@@ -9,18 +9,33 @@ export const setBackgroundColor = (forecast) => {
   } else {
     for (const key in forecast) {
       const tempValue = forecast[key].temp;
-      if (tempValue >= 35) {
+      const tempValueNumber = parseInt(tempValue.replaceAll(' °C', ''));
+
+      const tempValuehot =
+        (isCelsius && tempValueNumber >= 35) ||
+        (!isCelsius && tempValueNumber >= 95);
+
+      const tempValueCold =
+        (isCelsius && tempValueNumber <= 12) ||
+        (!isCelsius && tempValueNumber <= 54);
+
+      const tempValueDefault =
+        (isCelsius && tempValueNumber < 35 && tempValueNumber > 12) ||
+        (!isCelsius && tempValueNumber < 95 && tempValueNumber > 54);
+
+      if (tempValuehot) {
         forecastDivColor = {
           ...forecastDivColor,
           [key]: 'forecastContainer__hot',
         };
       }
-      if (tempValue <= 12) {
+      if (tempValueCold) {
         forecastDivColor = {
           ...forecastDivColor,
           [key]: 'forecastContainer__cold',
         };
-      } else {
+      }
+      if (tempValueDefault) {
         forecastDivColor = {
           ...forecastDivColor,
           [key]: 'forecastContainer__default',
@@ -28,7 +43,7 @@ export const setBackgroundColor = (forecast) => {
       }
     }
   }
+  console.log(forecastDivColor);
   return forecastDivColor;
 };
-
 export default setBackgroundColor;

@@ -4,7 +4,6 @@ const filterForecastData = (forecast) => {
   }
 
   function parseWeatherIcons(icon) {
-    console.log(icon);
     const weatherIcons = {
       '01d': 'B',
       '01n': 'B',
@@ -36,7 +35,7 @@ const filterForecastData = (forecast) => {
       today: {
         // icon: forecast[0].weather[0].icon,
         icon: parseWeatherIcons(forecast[0].weather[0].icon),
-        temp: forecast[0].main.temp,
+        temp: `${Math.round(forecast[0].main.temp)} °C`,
         description: capitalizeFirstLetter(forecast[0].weather[0].description),
         wind: forecast[0].wind.speed,
         pressure: forecast[0].main.pressure,
@@ -44,16 +43,15 @@ const filterForecastData = (forecast) => {
       },
       tomorrow: {
         icon: parseWeatherIcons(forecast[1].weather[0].icon),
-        temp: forecast[1].main.temp,
+        temp: `${Math.round(forecast[1].main.temp)} °C`,
         description: capitalizeFirstLetter(forecast[1].weather[0].description),
       },
       dayAfterTomorrow: {
         icon: parseWeatherIcons(forecast[2].weather[0].icon),
-        temp: forecast[2].main.temp,
+        temp: `${Math.round(forecast[2].main.temp)} °C`,
         description: capitalizeFirstLetter(forecast[2].weather[0].description),
       },
     };
-    console.log(formattedForecast);
     return formattedForecast;
   }
 };

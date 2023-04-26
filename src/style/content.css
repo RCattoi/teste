@@ -18,10 +18,6 @@
   gap: 70px;
 }
 
-/* .forecastContainer__noGeoLocation {
-  width: 200px;
-  
-} */
 .forecastContainer__noGeoLocation.today {
   background-color: #7a8988;
 }
@@ -70,7 +66,6 @@
   content: attr(data-icon);
   font-size: 15rem;
   text-decoration: none;
-  /* color: darkgray; */
   margin-left: 60px;
 }
 
@@ -91,4 +86,59 @@
   font-size: 5rem;
   display: block;
   text-align: center;
+}
+
+.forecastContainer__changeIcon::after {
+  content: url('../images/change_symbol.svg');
+  cursor: pointer;
+  rotate: 90deg;
+  margin-left: 10px;
+}
+.forecastContainer__changeIcon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 100px;
+}
+
+@media screen and (max-width: 700px) {
+  .forecastContainer__icon--secondary[data-icon]::before {
+    font-size: 7rem;
+    display: inline;
+    /* margin: 0px 0px 0px 10px; */
+  }
+  [data-icon]::before {
+    font-size: 7rem;
+    margin: 0px;
+    display: inline;
+    justify-self: center;
+  }
+  .forecastContainer__weatherWidget {
+    font-size: 1rem;
+    gap: 30px;
+    place-items: center;
+  }
+  .teste {
+    justify-self: center;
+  }
+  .forecastContainer__changeIcon {
+    width: 70px;
+  }
+  .forecastContainer__list {
+    justify-self: start;
+    margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .forecastContainer__icon--secondary[data-icon]::before {
+    font-size: 3rem;
+  }
+  [data-icon]::before {
+    font-size: 4rem;
+  }
+  .forecastContainer__weatherWidget {
+    font-size: 0.85rem;
+    gap: 10px;
+  }
 }

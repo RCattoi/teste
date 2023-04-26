@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import useFetch from './Hooks/useFetch.js';
-// import useLocalStorage from './Hooks/useLocalStorage.js';
 
 const Background = () => {
   const { request } = useFetch();

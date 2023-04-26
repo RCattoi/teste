@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import filterForecastData from './Utils/filterForecastData.js';
 import setBackgroundColor from './Utils/setBackgroundColor.js';
-import WeatherSetting from './Utils/teste.js';
+import { tempConverter } from './Utils/temperatureConverter.js';
 
 import content from './style/content.css';
 
 const Content = (props) => {
   const [forecast, setForecast] = useState(null);
   const [temp, setTemp] = useState(null);
+  const [isCelsius, setIsCelsius] = useState(true);
   const [classNameBackground, setClassNameBackground] = useState();
-
   useEffect(() => {
     const todayFullDate = props?.data?.list[0].dt_txt;
 
@@ -20,7 +20,6 @@ const Content = (props) => {
 
     const formattedForecast = filterForecastData(filteredDays);
     setForecast(formattedForecast);
-    setTemp();
   }, [props]);
 
   function getNextThreeDays(todayFullDate) {
@@ -37,25 +36,31 @@ const Content = (props) => {
     }
     return arrNextThreeDays;
   }
-  const classNamesBackground = setBackgroundColor(forecast);
+  const classNamesBackground = setBackgroundColor(forecast, isCelsius);
+
+  function handleClick() {
+    const convertedForecast = tempConverter(forecast, isCelsius);
+    setIsCelsius(!isCelsius);
+    setForecast(convertedForecast);
+  }
   return (
     <>
-      <div className="forecastContainer">
+      <div className={'forecastContainer'}>
         <div
           className={`${classNamesBackground.today} today  forecastContainer__weatherWidget`}
         >
           {forecast && (
             <>
               <div>
-                <p data-icon={forecast.today.icon}></p>
+                <p className="teste" data-icon={forecast.today.icon}></p>
               </div>
-              <div className="forecastContainer__content">
+              <div className="forecastContainer__list forecastContainer__content">
                 HOJE
                 <p
-                  className="forecastContainer__temp"
-                  onClick={() => console.log('trocou')}
+                  className="forecastContainer__temp forecastContainer__changeIcon"
+                  onClick={handleClick}
                 >
-                  {forecast.today.temp} °C
+                  {forecast.today.temp}
                 </p>
                 <p>{forecast.today.description}</p>
                 <ul>
@@ -78,10 +83,13 @@ const Content = (props) => {
                   data-icon={forecast.tomorrow.icon}
                 ></p>
               </div>
-              <ul>
+              <ul className="forecastContainer__list">
                 <li>AMANHÃ</li>
-                <li onClick={() => console.log('trocou')}>
-                  {forecast.today.temp} °C
+                <li
+                  className="forecastContainer__changeIcon"
+                  onClick={handleClick}
+                >
+                  {forecast.today.temp}
                 </li>
                 <li>{forecast.tomorrow.description}</li>
               </ul>
@@ -99,10 +107,13 @@ const Content = (props) => {
                   data-icon={forecast.dayAfterTomorrow.icon}
                 ></p>
               </div>
-              <ul>
-                <li>DEPOIS DE AMANHÃ</li>
-                <li onClick={() => console.log('trocou')}>
-                  {forecast.today.temp} °C
+              <ul className="forecastContainer__list">
+                <li className="forecastContainer__period">DEPOIS DE AMANHÃ</li>
+                <li
+                  className="forecastContainer__changeIcon"
+                  onClick={handleClick}
+                >
+                  {forecast.today.temp}
                 </li>
                 <li>{forecast.dayAfterTomorrow.description}</li>
               </ul>
@@ -113,5 +124,4 @@ const Content = (props) => {
     </>
   );
 };
-
 export default Content;
