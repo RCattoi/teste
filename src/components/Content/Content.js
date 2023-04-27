@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import filterForecastData from './Utils/filterForecastData.js';
-import setBackgroundColor from './Utils/setBackgroundColor.js';
-import { tempConverter } from './Utils/temperatureConverter.js';
+import React, { useState, useEffect } from "react";
+import filterForecastData from "../../Utils/filterForecastData.js";
+import setBackgroundColor from "../../Utils/setBackgroundColor.js";
+import { tempConverter } from "../../Utils/temperatureConverter.js";
 
-import content from './style/content.css';
+import styles from "./content.module.css";
 
 const Content = (props) => {
   const [forecast, setForecast] = useState(null);
@@ -25,18 +25,21 @@ const Content = (props) => {
   function getNextThreeDays(todayFullDate) {
     let arrNextThreeDays = [];
     for (let i = 0; i < 3; i++) {
-      let yearMonth = todayFullDate.split('-').slice(0, 2);
-      let dayHour = todayFullDate.split('-').pop().split(' ');
+      let yearMonth = todayFullDate.split("-").slice(0, 2);
+      let dayHour = todayFullDate.split("-").pop().split(" ");
       dayHour[0] = parseInt(dayHour[0]) + i;
       dayHour[1] = ` ${dayHour[1]}`;
-      let yearMonthStr = yearMonth.join('-');
-      let dayHourStr = dayHour.join('');
+      let yearMonthStr = yearMonth.join("-");
+      let dayHourStr = dayHour.join("");
       let fullDateStr = `${yearMonthStr}-${dayHourStr}`;
       arrNextThreeDays.push(fullDateStr);
     }
     return arrNextThreeDays;
   }
-  const classNamesBackground = setBackgroundColor(forecast, isCelsius);
+  const { today, tomorrow, dayAfterTomorrow } = setBackgroundColor(
+    forecast,
+    isCelsius
+  );
 
   function handleClick() {
     const convertedForecast = tempConverter(forecast, isCelsius);
@@ -45,19 +48,21 @@ const Content = (props) => {
   }
   return (
     <>
-      <div className={'forecastContainer'}>
+      <div className={styles.forecastContainer}>
         <div
-          className={`${classNamesBackground.today} today  forecastContainer__weatherWidget`}
+          className={`${styles[today]} ${styles.today} ${styles.forecastContainer__weatherWidget}`}
         >
           {forecast && (
             <>
               <div>
-                <p className="teste" data-icon={forecast.today.icon}></p>
+                <p className={styles.teste} data-icon={forecast.today.icon}></p>
               </div>
-              <div className="forecastContainer__list forecastContainer__content">
+              <div
+                className={`${styles.forecastContainer__list} ${styles.forecastContainer__content}`}
+              >
                 HOJE
                 <p
-                  className="forecastContainer__temp forecastContainer__changeIcon"
+                  className={`${styles.forecastContainer__temp} ${styles.forecastContainer__changeIcon}`}
                   onClick={handleClick}
                 >
                   {forecast.today.temp}
@@ -73,20 +78,20 @@ const Content = (props) => {
           )}
         </div>
         <div
-          className={`${classNamesBackground.tomorrow} tomorrow forecastContainer__weatherWidget`}
+          className={`${styles[tomorrow]} ${styles.tomorrow} ${styles.forecastContainer__weatherWidget}`}
         >
           {forecast && (
             <>
               <div>
                 <p
-                  className="forecastContainer__icon--secondary"
+                  className={styles.forecastContainer__icon___secondary}
                   data-icon={forecast.tomorrow.icon}
                 ></p>
               </div>
-              <ul className="forecastContainer__list">
+              <ul className={styles.forecastContainer__list}>
                 <li>AMANHÃ</li>
                 <li
-                  className="forecastContainer__changeIcon"
+                  className={styles.forecastContainer__changeIcon}
                   onClick={handleClick}
                 >
                   {forecast.today.temp}
@@ -97,20 +102,22 @@ const Content = (props) => {
           )}
         </div>
         <div
-          className={`${classNamesBackground.dayAfterTomorrow} dayAfterTomorrow forecastContainer__weatherWidget`}
+          className={`${styles[dayAfterTomorrow]} ${styles.dayAfterTomorrow} ${styles.forecastContainer__weatherWidget}`}
         >
           {forecast && (
             <>
               <div>
                 <p
-                  className="forecastContainer__icon--secondary"
+                  className={styles.forecastContainer__icon___secondary}
                   data-icon={forecast.dayAfterTomorrow.icon}
                 ></p>
               </div>
-              <ul className="forecastContainer__list">
-                <li className="forecastContainer__period">DEPOIS DE AMANHÃ</li>
+              <ul className={styles.forecastContainer__list}>
+                <li className={styles.forecastContainer__period}>
+                  DEPOIS DE AMANHÃ
+                </li>
                 <li
-                  className="forecastContainer__changeIcon"
+                  className={styles.forecastContainer__changeIcon}
                   onClick={handleClick}
                 >
                   {forecast.today.temp}
