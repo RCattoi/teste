@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useFetch from './Hooks/useFetch.js';
+import useFetch from '../../Hooks/useFetch.js';
 
 const Background = () => {
   const { request } = useFetch();
