@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Content from './Content.js';
-import useFetch from './Hooks/useFetch.js';
-import useDebounce from './Hooks/useDebounce.js';
-import style from './style/search.module.css';
+import Content from '../Content/Content.js';
+import useFetch from '../../Hooks/useFetch.js';
+import useDebounce from '../../Hooks/useDebounce.js';
+import style from "./search.module.css"
 
 const Search = () => {
   const [location, setLocation] = useState(null);
