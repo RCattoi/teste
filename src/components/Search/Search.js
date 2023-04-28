@@ -33,6 +33,13 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
+    // aqui você poderia abstrair essa função tambem, colocando algo como 
+    /**
+     * const setWeatherData = async () => {
+     *  const weatherData = await setDefaultWeatherForecast();
+     *  setData(weatherData)
+     * }
+     */
     const setDefaultWeatherForecast = async () => {
       if (location) {
         const { latitude, longitude } = location;
