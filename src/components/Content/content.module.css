@@ -9,12 +9,18 @@
   font-style: normal;
 }
 
+.preto{
+  color: black;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
 .forecastContainer__weatherWidget {
   opacity: 0.9;
   font-size: 1.5rem;
   color: white;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 70px;
 }
 

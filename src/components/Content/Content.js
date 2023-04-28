@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import filterForecastData from "../../Utils/filterForecastData.js";
-import setBackgroundColor from "../../Utils/setBackgroundColor.js";
-import { tempConverter } from "../../Utils/temperatureConverter.js";
+import filterForecastData from "../../Utils/filterForecastData";
+import getNextThreeDays from "../../Utils/getNextThreeDays";
+import setBackgroundColor from "../../Utils/setBackgroundColor";
+// Se você não vai usar mais de um modulo no arquivo, pode exportar default direto de la
+import tempConverter from "../../Utils/temperatureConverter";
+import ContentSection from "./ContentSection/";
 
 import styles from "./content.module.css";
 
@@ -22,111 +25,33 @@ const Content = (props) => {
     setForecast(formattedForecast);
   }, [props]);
 
-  function getNextThreeDays(todayFullDate) {
-    let arrNextThreeDays = [];
-    for (let i = 0; i < 3; i++) {
-      let yearMonth = todayFullDate.split("-").slice(0, 2);
-      let dayHour = todayFullDate.split("-").pop().split(" ");
-      dayHour[0] = parseInt(dayHour[0]) + i;
-      dayHour[1] = ` ${dayHour[1]}`;
-      let yearMonthStr = yearMonth.join("-");
-      let dayHourStr = dayHour.join("");
-      let fullDateStr = `${yearMonthStr}-${dayHourStr}`;
-      arrNextThreeDays.push(fullDateStr);
-    }
-    return arrNextThreeDays;
-  }
   const { today, tomorrow, dayAfterTomorrow } = setBackgroundColor(
     forecast,
     isCelsius
   );
-
-  function handleClick() {
+  // O uso de arrow function é mais comum e declarar funções com const prevê problemas com reatribuição de dados pra um mesmo nome
+  const handleClick = () => {
     const convertedForecast = tempConverter(forecast, isCelsius);
     setIsCelsius(!isCelsius);
     setForecast(convertedForecast);
-  }
+  };
   return (
     <>
       <div className={styles.forecastContainer}>
-        <div
-          className={`${styles[today]} ${styles.today} ${styles.forecastContainer__weatherWidget}`}
-        >
-          {forecast && (
-            <>
-              <div>
-                <p className={styles.teste} data-icon={forecast.today.icon}></p>
-              </div>
-              <div
-                className={`${styles.forecastContainer__list} ${styles.forecastContainer__content}`}
-              >
-                HOJE
-                <p
-                  className={`${styles.forecastContainer__temp} ${styles.forecastContainer__changeIcon}`}
-                  onClick={handleClick}
-                >
-                  {forecast.today.temp}
-                </p>
-                <p>{forecast.today.description}</p>
-                <ul>
-                  <li>Vento: {forecast.today.wind}</li>
-                  <li>Pressão: {forecast.today.pressure}</li>
-                  <li>Humidade: {forecast.today.humidity}</li>
-                </ul>
-              </div>
-            </>
-          )}
-        </div>
-        <div
-          className={`${styles[tomorrow]} ${styles.tomorrow} ${styles.forecastContainer__weatherWidget}`}
-        >
-          {forecast && (
-            <>
-              <div>
-                <p
-                  className={styles.forecastContainer__icon___secondary}
-                  data-icon={forecast.tomorrow.icon}
-                ></p>
-              </div>
-              <ul className={styles.forecastContainer__list}>
-                <li>AMANHÃ</li>
-                <li
-                  className={styles.forecastContainer__changeIcon}
-                  onClick={handleClick}
-                >
-                  {forecast.today.temp}
-                </li>
-                <li>{forecast.tomorrow.description}</li>
-              </ul>
-            </>
-          )}
-        </div>
-        <div
-          className={`${styles[dayAfterTomorrow]} ${styles.dayAfterTomorrow} ${styles.forecastContainer__weatherWidget}`}
-        >
-          {forecast && (
-            <>
-              <div>
-                <p
-                  className={styles.forecastContainer__icon___secondary}
-                  data-icon={forecast.dayAfterTomorrow.icon}
-                ></p>
-              </div>
-              <ul className={styles.forecastContainer__list}>
-                <li className={styles.forecastContainer__period}>
-                  DEPOIS DE AMANHÃ
-                </li>
-                <li
-                  className={styles.forecastContainer__changeIcon}
-                  onClick={handleClick}
-                >
-                  {forecast.today.temp}
-                </li>
-                <li>{forecast.dayAfterTomorrow.description}</li>
-              </ul>
-            </>
-          )}
-        </div>
+        {/* Aqui poderia ter uma estrutura de componente que economizaria duplicação de código */}
+        {/* Do jeito que eu eu coloquei aqui não chega a funcionar porque ia ter que mudar a esturuta do código,*/}
+        {forecast && (
+          <div
+            className={`${styles[tomorrow]} ${styles[tomorrow]} ${styles.forecastContainer__weatherWidget}`}
+          >
+            {Object.keys(forecast).map((a) => (
+              <ContentSection
+                forecastData={forecast[a]}
+                handleClick={() => handleClick()}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
