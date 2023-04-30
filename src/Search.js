@@ -1,5 +1,11 @@
+import Error from './Error.js';
 import React, { useEffect, useState, useRef } from 'react';
 import Content from './Content.js';
+import {
+  getForecastLocalStorage,
+  saveForeCastLocalStorage,
+  deleteForeCastLocalStorage,
+} from './Utils/weatherForecastLocalStorage.js';
 import useFetch from './Hooks/useFetch.js';
 import useDebounce from './Hooks/useDebounce.js';
 import style from './style/search.module.css';
@@ -10,8 +16,9 @@ const Search = () => {
   const [placeholderCity, setPlaceholderCity] = useState(null);
   const [LocationEnable, setLocationEnable] = useState(false);
   const [data, setData] = useState(null);
+  const [errorRequest, setErrorRequest] = useState(false);
 
-  const { request } = useFetch();
+  const { request, error } = useFetch();
 
   const debouncedSearchValue = useDebounce(searchValue, 1000);
 
@@ -33,6 +40,10 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
+    deleteForeCastLocalStorage();
+  }, []);
+
+  useEffect(() => {
     const setDefaultWeatherForecast = async () => {
       if (location) {
         const { latitude, longitude } = location;
@@ -42,12 +53,26 @@ const Search = () => {
         const geoLocationCity =
           geoLocationResponse.json.results[0].components.city;
         setPlaceholderCity(geoLocationCity);
-        const formattedGeoLocationCity = geoLocationCity.replaceAll(' ', '+');
-        const apiKey = '772920597e4ec8f00de8d376dfb3f094';
-        const weatherForecastResponse = await request(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${formattedGeoLocationCity}&units=metric&lang=pt_br&appid=${apiKey}`
+        const formattedGeoLocationCity = geoLocationCity
+          .replaceAll(' ', '+')
+          .toLowerCase();
+        const foreCastLocalStorage = getForecastLocalStorage(
+          formattedGeoLocationCity
         );
-        setData(weatherForecastResponse.json);
+        if (foreCastLocalStorage) {
+          const jsonForeCastLocalStorage = JSON.parse(foreCastLocalStorage);
+          setData(jsonForeCastLocalStorage);
+        } else {
+          const apiKey = '772920597e4ec8f00de8d376dfb3f094';
+          const weatherForecastResponse = await request(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${formattedGeoLocationCity}&units=metric&lang=pt_br&appid=${apiKey}`
+          );
+          setData(weatherForecastResponse.json);
+          saveForeCastLocalStorage(
+            formattedGeoLocationCity,
+            weatherForecastResponse.json
+          );
+        }
       }
     };
     setDefaultWeatherForecast();
@@ -60,30 +85,50 @@ const Search = () => {
   useEffect(() => {
     if (debouncedSearchValue) {
       const searchHandler = async () => {
-        const formattedSearchValue = debouncedSearchValue.replaceAll(' ', '+');
-
-        const apiKey = '772920597e4ec8f00de8d376dfb3f094';
-        const weatherForecastResponse = await request(
-          `https://api.openweathermap.org/data/2.5/forecast?q=${debouncedSearchValue}&units=metric&lang=pt_br&appid=${apiKey}`
-        );
-        setData(weatherForecastResponse.json);
+        const formattedSearchValue = debouncedSearchValue
+          .replaceAll(' ', '+')
+          .toLowerCase();
+        const foreCastLocalStorage =
+          getForecastLocalStorage(formattedSearchValue);
+        if (foreCastLocalStorage) {
+          const jsonForeCastLocalStorage = JSON.parse(foreCastLocalStorage);
+          setData(jsonForeCastLocalStorage);
+        } else {
+          const apiKey = '772920597e4ec8f00de8d376dfb3f094';
+          const weatherForecastResponse = await request(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${formattedSearchValue}&units=metric&lang=pt_br&appid=${apiKey}`
+          );
+          setData(weatherForecastResponse.json);
+          setErrorRequest(!weatherForecastResponse.json);
+          saveForeCastLocalStorage(
+            formattedSearchValue,
+            weatherForecastResponse.json
+          );
+        }
       };
       searchHandler();
     }
   }, [debouncedSearchValue]);
 
+  function handleClick() {
+    setLocationEnable(false);
+    setErrorRequest(false);
+  }
   return (
     <>
-      {LocationEnable && (
-        <div className={style.search__erro}>
-          Para melhor Utilizar o serviço, ative a geolocalização!
-        </div>
+      {errorRequest && (
+        <Error name={'Cidade não encontrada, pesquise novamente!'} />
       )}
-      <div className={style.teste}>
+      {LocationEnable && (
+        <Error
+          name={'Para melhor Utilizar o serviço, ative a geolocalização!'}
+        />
+      )}
+      <div className={style.search}>
         <input
           onChange={handleChange}
           placeholder={placeholderCity}
-          onClick={() => setLocationEnable(false)}
+          onClick={handleClick}
           data-search={'('}
           className={style.search__bar}
         ></input>

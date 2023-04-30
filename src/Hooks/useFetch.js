@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 const useFetch = () => {
-  const [data, setData] = React.useState(null);
-  const [error, setError] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const request = React.useCallback(async (url, options) => {
-    let response;
+  const request = useCallback(async (url, options) => {
     let json;
     try {
-      setError(null);
       setLoading(true);
-      response = await fetch(url, options);
+      const response = await fetch(url, options);
       json = await response.json();
       if (response.ok === false) throw new Error(json.message);
     } catch (err) {
@@ -20,8 +18,8 @@ const useFetch = () => {
     } finally {
       setData(json);
       setLoading(false);
-      return { response, json };
     }
+    return { json };
   }, []);
 
   return {

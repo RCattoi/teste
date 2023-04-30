@@ -9,7 +9,8 @@ export const setBackgroundColor = (forecast, isCelsius) => {
   } else {
     for (const key in forecast) {
       const tempValue = forecast[key].temp;
-      const tempValueNumber = parseInt(tempValue.replaceAll(' °C', ''));
+
+      const tempValueNumber = parseInt(tempValue);
 
       const tempValuehot =
         (isCelsius && tempValueNumber >= 35) ||
@@ -43,7 +44,7 @@ export const setBackgroundColor = (forecast, isCelsius) => {
       }
     }
   }
-  console.log(forecastDivColor);
+
   return forecastDivColor;
 };
 export default setBackgroundColor;

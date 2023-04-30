@@ -1,4 +1,31 @@
 const filterForecastData = (forecast) => {
+  function mpsToKph(mps) {
+    let kph = Math.round(mps * 3.6);
+    return `${kph}km/h`;
+  }
+
+  function degToDirection(degrees) {
+    const directions = [
+      'N',
+      'NNE',
+      'NE',
+      'ENE',
+      'L',
+      'ESE',
+      'SE',
+      'SSE',
+      'S',
+      'SSO',
+      'SO',
+      'OSO',
+      'O',
+      'ONO',
+      'NO',
+      'NNO',
+    ];
+    const index = Math.round(degrees / 22.5) % 16;
+    return directions[index];
+  }
   function capitalizeFirstLetter(word) {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
@@ -33,13 +60,14 @@ const filterForecastData = (forecast) => {
   if (forecast) {
     const formattedForecast = {
       today: {
-        // icon: forecast[0].weather[0].icon,
         icon: parseWeatherIcons(forecast[0].weather[0].icon),
         temp: `${Math.round(forecast[0].main.temp)} °C`,
         description: capitalizeFirstLetter(forecast[0].weather[0].description),
-        wind: forecast[0].wind.speed,
-        pressure: forecast[0].main.pressure,
-        humidity: forecast[0].main.humidity,
+        wind: `${degToDirection(forecast[0].wind.deg)} ${mpsToKph(
+          forecast[0].wind.speed
+        )}`,
+        pressure: `${forecast[0].main.pressure} hPA`,
+        humidity: `${forecast[0].main.humidity}%`,
       },
       tomorrow: {
         icon: parseWeatherIcons(forecast[1].weather[0].icon),

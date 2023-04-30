@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useFetch from './Hooks/useFetch.js';
+import getFormattedCurrentDate from './Utils/formattedFullCurrentDate.js';
 
 const Background = () => {
   const { request } = useFetch();
@@ -10,18 +11,6 @@ const Background = () => {
     const imageDateValue = localStorage.getItem(keys[1]);
     return { imageUrlValue, imageDateValue };
   };
-
-  function getFormattedCurrentDate() {
-    const currentDate = new Date();
-    const fullYear = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1;
-    const dayOfMonth = currentDate.getDate();
-
-    const formattedMonth = String(month).padStart(2, '0');
-    const formattedDayOfMonth = String(dayOfMonth).padStart(2, '0');
-
-    return `${fullYear}${formattedMonth}${formattedDayOfMonth}`;
-  }
 
   useEffect(() => {
     async function setBackgroudImage() {

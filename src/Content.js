@@ -9,39 +9,75 @@ const Content = (props) => {
   const [forecast, setForecast] = useState(null);
   const [temp, setTemp] = useState(null);
   const [isCelsius, setIsCelsius] = useState(true);
-  const [classNameBackground, setClassNameBackground] = useState();
+  const [classNamesBackground, setClassNamesBackground] = useState({
+    today: 'forecastContainer__noGeoLocation',
+    tomorrow: 'forecastContainer__noGeoLocation',
+    dayAfterTomorrow: 'forecastContainer__noGeoLocation',
+  });
   useEffect(() => {
-    const todayFullDate = props?.data?.list[0].dt_txt;
-
+    const todayFullDate = props?.data?.list[0]?.dt_txt;
     const filteredDays = props?.data?.list.filter((element) => {
       const nextThreeDays = getNextThreeDays(todayFullDate);
       return nextThreeDays.includes(element.dt_txt);
     });
-
     const formattedForecast = filterForecastData(filteredDays);
     setForecast(formattedForecast);
+    setIsCelsius(true);
   }, [props]);
 
   function getNextThreeDays(todayFullDate) {
-    let arrNextThreeDays = [];
-    for (let i = 0; i < 3; i++) {
-      let yearMonth = todayFullDate.split('-').slice(0, 2);
-      let dayHour = todayFullDate.split('-').pop().split(' ');
-      dayHour[0] = parseInt(dayHour[0]) + i;
-      dayHour[1] = ` ${dayHour[1]}`;
-      let yearMonthStr = yearMonth.join('-');
-      let dayHourStr = dayHour.join('');
-      let fullDateStr = `${yearMonthStr}-${dayHourStr}`;
-      arrNextThreeDays.push(fullDateStr);
+    const firstDate = new Date(todayFullDate);
+    const dayMonth = [31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31];
+
+    const result = [todayFullDate];
+
+    for (let i = 1; i <= 2; i++) {
+      let newDate = new Date(firstDate.getTime() + i * 24 * 60 * 60 * 1000);
+
+      if (newDate.getMonth() === 1 && newDate.getDate() === 28) {
+        newDate.setDate(newDate.getDate() + 2);
+      } else if (
+        dayMonth[newDate.getMonth()] === 30 &&
+        newDate.getDate() === 31
+      ) {
+        newDate.setDate(30);
+      }
+      const novaDataFormatada =
+        newDate.toISOString().slice(0, 10) + ' ' + todayFullDate.slice(11);
+
+      result.push(novaDataFormatada);
     }
-    return arrNextThreeDays;
+
+    return result;
   }
-  const classNamesBackground = setBackgroundColor(forecast, isCelsius);
+
+  useEffect(() => {
+    if (isCelsius) {
+      const backgroundClass = setBackgroundColor(forecast, isCelsius);
+      setClassNamesBackground(backgroundClass);
+    }
+  }, [forecast]);
 
   function handleClick() {
     const convertedForecast = tempConverter(forecast, isCelsius);
     setIsCelsius(!isCelsius);
     setForecast(convertedForecast);
+  }
+
+  if (!forecast) {
+    return (
+      <>
+        <div
+          className={`${classNamesBackground.today} today  forecastContainer__weatherWidget`}
+        ></div>
+        <div
+          className={`${classNamesBackground.tomorrow} tomorrow  forecastContainer__weatherWidget`}
+        ></div>
+        <div
+          className={`${classNamesBackground.dayAfterTomorrow} dayAfterTomorrow  forecastContainer__weatherWidget`}
+        ></div>
+      </>
+    );
   }
   return (
     <>
@@ -52,7 +88,10 @@ const Content = (props) => {
           {forecast && (
             <>
               <div>
-                <p className="teste" data-icon={forecast.today.icon}></p>
+                <p
+                  className="forecastContainer__icon"
+                  data-icon={forecast.today.icon}
+                ></p>
               </div>
               <div className="forecastContainer__list forecastContainer__content">
                 HOJE
@@ -89,7 +128,7 @@ const Content = (props) => {
                   className="forecastContainer__changeIcon"
                   onClick={handleClick}
                 >
-                  {forecast.today.temp}
+                  {forecast.tomorrow.temp}
                 </li>
                 <li>{forecast.tomorrow.description}</li>
               </ul>
@@ -113,7 +152,7 @@ const Content = (props) => {
                   className="forecastContainer__changeIcon"
                   onClick={handleClick}
                 >
-                  {forecast.today.temp}
+                  {forecast.dayAfterTomorrow.temp}
                 </li>
                 <li>{forecast.dayAfterTomorrow.description}</li>
               </ul>

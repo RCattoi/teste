@@ -26,21 +26,11 @@
   border: none;
   outline: none;
 }
-
-.search__erro {
-  width: 100vw;
-  box-sizing: border-box;
-  background-color: #dc2326;
-  text-align: center;
-  color: white;
-  display: block;
-  padding: 3px;
-}
-.teste {
+.search {
   display: flex;
   align-items: center;
 }
-.teste::before {
+.search::before {
   font-family: 'MeteoconsRegular';
   content: '(';
   position: absolute;
@@ -52,12 +42,19 @@
 
 @media screen and (max-width: 700px) {
   .search__bar {
-    width: 400px;
+    width: 363px;
   }
 }
 
 @media screen and (max-width: 400px) {
   .search__bar {
-    width: 200px;
+    width: 296px;
+    font-size: 1.5rem;
+    height: 50px;
+  }
+}
+@media screen and (max-width: 300px) {
+  .search__bar {
+    width: 260px;
   }
 }

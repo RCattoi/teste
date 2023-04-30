@@ -20,13 +20,19 @@
 
 .forecastContainer__noGeoLocation.today {
   background-color: #7a8988;
+  height: 293px;
+  width: 670px;
 }
 .forecastContainer__noGeoLocation.tomorrow {
   background-color: #96a1a0;
+  height: 130px;
+  width: 670px;
 }
 
 .forecastContainer__noGeoLocation.dayAfterTomorrow {
   background-color: #bfc6c6;
+  height: 130px;
+  width: 670px;
 }
 .forecastContainer__default.today {
   background-color: #ffd400;
@@ -105,7 +111,6 @@
   .forecastContainer__icon--secondary[data-icon]::before {
     font-size: 7rem;
     display: inline;
-    /* margin: 0px 0px 0px 10px; */
   }
   [data-icon]::before {
     font-size: 7rem;
@@ -118,7 +123,13 @@
     gap: 30px;
     place-items: center;
   }
-  .teste {
+  .forecastContainer__noGeoLocation.today,
+  .forecastContainer__noGeoLocation.tomorrow,
+  .forecastContainer__noGeoLocation.dayAfterTomorrow {
+    width: 363px;
+  }
+
+  .forecastContainer__icon {
     justify-self: center;
   }
   .forecastContainer__changeIcon {
@@ -128,9 +139,18 @@
     justify-self: start;
     margin-right: 10px;
   }
+  .forecastContainer__changeIcon::after {
+    transform: scale(0.6);
+    margin-left: 0px;
+  }
 }
 
 @media screen and (max-width: 400px) {
+  .forecastContainer__noGeoLocation.today,
+  .forecastContainer__noGeoLocation.tomorrow,
+  .forecastContainer__noGeoLocation.dayAfterTomorrow {
+    width: 296px;
+  }
   .forecastContainer__icon--secondary[data-icon]::before {
     font-size: 3rem;
   }
@@ -140,5 +160,14 @@
   .forecastContainer__weatherWidget {
     font-size: 0.85rem;
     gap: 10px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .forecastContainer__noGeoLocation.today,
+  .forecastContainer__noGeoLocation.tomorrow,
+  .forecastContainer__noGeoLocation.dayAfterTomorrow,
+  .forecastContainer__weatherWidget {
+    width: 260px;
   }
 }
