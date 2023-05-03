@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  api:
+    build: ./api
+    container_name: service_api_container
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./api:/app
+  myapp:
+    build: ./myapp
+    container_name: react_app_container
+    env_file: .env
+    ports:
+      - '3000:3000'

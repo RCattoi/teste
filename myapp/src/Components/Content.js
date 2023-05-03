@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import filterForecastData from './Utils/filterForecastData.js';
-import setBackgroundColor from './Utils/setBackgroundColor.js';
-import { tempConverter } from './Utils/temperatureConverter.js';
+import filterForecastData from '../Utils/filterForecastData.js';
+import setBackgroundColor from '../Utils/setBackgroundColor.js';
+import { tempConverter } from '../Utils/temperatureConverter.js';
 
-import content from './style/content.css';
+import content from '../style/content.css';
 
 const Content = (props) => {
   const [forecast, setForecast] = useState(null);

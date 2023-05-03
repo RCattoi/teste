@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import useFetch from './Hooks/useFetch.js';
-import getFormattedCurrentDate from './Utils/formattedFullCurrentDate.js';
+import useFetch from '../Hooks/useFetch.js';
+import getFormattedCurrentDate from '../Utils/formattedFullCurrentDate.js';
 
 const Background = () => {
   const { request } = useFetch();

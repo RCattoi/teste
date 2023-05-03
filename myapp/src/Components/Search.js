@@ -1,14 +1,14 @@
-import Error from './Error.js';
+import Error from '../Components/Error.js';
 import React, { useEffect, useState, useRef } from 'react';
-import Content from './Content.js';
+import Content from '../Components/Content.js';
 import {
   getForecastLocalStorage,
   saveForeCastLocalStorage,
   deleteForeCastLocalStorage,
-} from './Utils/weatherForecastLocalStorage.js';
-import useFetch from './Hooks/useFetch.js';
-import useDebounce from './Hooks/useDebounce.js';
-import style from './style/search.module.css';
+} from '../Utils/weatherForecastLocalStorage.js';
+import useFetch from '../Hooks/useFetch.js';
+import useDebounce from '../Hooks/useDebounce.js';
+import style from '../style/search.module.css';
 
 const Search = () => {
   const [location, setLocation] = useState(null);
@@ -63,7 +63,6 @@ const Search = () => {
           const jsonForeCastLocalStorage = JSON.parse(foreCastLocalStorage);
           setData(jsonForeCastLocalStorage);
         } else {
-          const apiKey = '772920597e4ec8f00de8d376dfb3f094';
           const weatherForecastResponse = await request(
             `https://api.openweathermap.org/data/2.5/forecast?q=${formattedGeoLocationCity}&units=metric&lang=pt_br&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`
           );
@@ -96,7 +95,7 @@ const Search = () => {
         } else {
           const apiKey = '772920597e4ec8f00de8d376dfb3f094';
           const weatherForecastResponse = await request(
-            `https://api.openweathermap.org/data/2.5/forecast?q=${formattedSearchValue}&units=metric&lang=pt_br&appid=${process.env.OPEN_WEATHER_API_KEY}`
+            `https://api.openweathermap.org/data/2.5/forecast?q=${formattedSearchValue}&units=metric&lang=pt_br&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`
           );
           setData(weatherForecastResponse.json);
           setErrorRequest(!weatherForecastResponse.json);
