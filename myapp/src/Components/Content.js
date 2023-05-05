@@ -4,10 +4,10 @@ import setBackgroundColor from '../Utils/setBackgroundColor.js';
 import { tempConverter } from '../Utils/temperatureConverter.js';
 
 import content from '../style/content.css';
+import WeatherForecastContainer from './WeatherForecastContainer.js';
 
 const Content = (props) => {
   const [forecast, setForecast] = useState(null);
-  const [temp, setTemp] = useState(null);
   const [isCelsius, setIsCelsius] = useState(true);
   const [classNamesBackground, setClassNamesBackground] = useState({
     today: 'forecastContainer__noGeoLocation',
@@ -65,23 +65,25 @@ const Content = (props) => {
   }
 
   if (!forecast) {
-    return (
-      <>
-        <div
-          className={`${classNamesBackground.today} today  forecastContainer__weatherWidget`}
-        ></div>
-        <div
-          className={`${classNamesBackground.tomorrow} tomorrow  forecastContainer__weatherWidget`}
-        ></div>
-        <div
-          className={`${classNamesBackground.dayAfterTomorrow} dayAfterTomorrow  forecastContainer__weatherWidget`}
-        ></div>
-      </>
-    );
+    return <WeatherForecastContainer forecast={forecast} />;
+    // return (
+    //   <>
+    //     <div
+    //       className={`${classNamesBackground.today} today  forecastContainer__weatherWidget`}
+    //     ></div>
+    //     <div
+    //       className={`${classNamesBackground.tomorrow} tomorrow  forecastContainer__weatherWidget`}
+    //     ></div>
+    //     <div
+    //       className={`${classNamesBackground.dayAfterTomorrow} dayAfterTomorrow  forecastContainer__weatherWidget`}
+    //     ></div>
+    //   </>
+    // );
   }
   return (
     <>
       <div className={'forecastContainer'}>
+        <WeatherForecastContainer forecast={forecast} isCelsius={isCelsius} />
         <div
           className={`${classNamesBackground.today} today  forecastContainer__weatherWidget`}
         >
