@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import style from '../style/content.module.css';
 import { tempConverter } from '../Utils/temperatureConverter.js';
+import setBackgroundColor from '../Utils/setBackgroundColor.js';
 
 // import setBackgroundColor from '../Utils/setBackgroundColor';
 
@@ -28,10 +29,11 @@ const WeatherForecastContainer = (props) => {
   if (!forecast) {
     return (
       <>
-        {Object.keys(forecastEmpty).map((day) => {
+        {Object.keys(forecastEmpty).map((day, index) => {
           return (
             <div
-              className={`${style[day]} ${style.forecastContainer__noGeoLocation}`}
+              className={`${style.forecastContainer__noGeoLocation} ${style[day]}`}
+              style={setBackgroundColor(forecast, isCelsius)[index]}
             ></div>
           );
         })}
@@ -40,14 +42,14 @@ const WeatherForecastContainer = (props) => {
   }
   return (
     forecast &&
-    Object.keys(forecast).map((day) => {
+    Object.keys(forecast).map((day, index) => {
       const { temp, description, icon, wind, pressure, humidity } =
         forecast[day];
       return (
         <>
           <div
-            style={{ backgroundColor: `blue` }}
-            className={style.forecastContainer__weatherWidget}
+            style={setBackgroundColor(forecast, isCelsius)[index]}
+            className={`${style.forecastContainer__weatherWidget} ${style[day]}`}
             key={day}
           >
             <div>

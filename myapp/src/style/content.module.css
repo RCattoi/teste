@@ -21,55 +21,17 @@ p {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 70px;
+  align-items: center;
 }
-
+.forecastContainer__weatherWidget.today,
 .forecastContainer__noGeoLocation.today {
-  background-color: #7a8988;
   height: 293px;
-  width: 670px;
 }
-.forecastContainer__noGeoLocation.tomorrow {
-  background-color: #96a1a0;
-}
-.forecastContainer__noGeoLocation.dayAfterTomorrow,
-.forecastContainer__noGeoLocation.tomorrow {
-  height: 130px;
-  width: 670px;
-}
+.forecastContainer__weatherWidget.tomorrow,
+.forecastContainer__weatherWidget.dayAfterTomorrow,
+.forecastContainer__noGeoLocation.tomorrow,
 .forecastContainer__noGeoLocation.dayAfterTomorrow {
-  background-color: #bfc6c6;
-}
-.forecastContainer__default.today {
-  background-color: #ffd400;
-}
-.forecastContainer__default.tomorrow {
-  background-color: #ffe255;
-}
-
-.forecastContainer__default.dayAfterTomorrow {
-  background-color: #ffec92;
-}
-
-.forecastContainer__cold.today {
-  background-color: #00a7ff;
-}
-.forecastContainer__cold.tomorrow {
-  background-color: #62c9ff;
-}
-
-.forecastContainer__cold.dayAfterTomorrow {
-  background-color: #ade2ff;
-}
-
-.forecastContainer__hot.today {
-  background-color: #cb443d;
-}
-.forecastContainer__hot.tomorrow {
-  background-color: #d4645e;
-}
-
-.forecastContainer__hot.dayAfterTomorrow {
-  background-color: #e29793;
+  height: 130px;
 }
 
 [data-icon]::before {
@@ -135,13 +97,22 @@ p {
     font-size: 1rem;
     gap: 30px;
     place-items: center;
+    height: 100px;
   }
-  .forecastContainer__noGeoLocation.today,
+  .forecastContainer__noGeoLocation.today {
+    width: 363px;
+  }
   .forecastContainer__noGeoLocation.tomorrow,
   .forecastContainer__noGeoLocation.dayAfterTomorrow {
     width: 363px;
   }
-
+  .forecastContainer__weatherWidget.today {
+    height: 200px;
+  }
+  .forecastContainer__weatherWidget.tomorrow,
+  .forecastContainer__weatherWidget.dayAfterTomorrow {
+    height: 100px;
+  }
   .forecastContainer__icon {
     justify-self: center;
   }

@@ -1,11 +1,26 @@
 export const setBackgroundColor = (forecast, isCelsius) => {
-  let forecastDivColor = {};
+  let forecastDivColor;
   if (!forecast) {
-    forecastDivColor = {
-      today: 'forecastContainer__noGeoLocation',
-      tomorrow: 'forecastContainer__noGeoLocation',
-      dayAfterTomorrow: 'forecastContainer__noGeoLocation',
-    };
+    forecastDivColor = [
+      {
+        backgroundColor: '#7a8988',
+        height: '293px',
+        width: '670px',
+        opacity: '0.9',
+      },
+      {
+        backgroundColor: '#96a1a0',
+        height: '130px',
+        width: '670px',
+        opacity: '0.9',
+      },
+      {
+        backgroundColor: '#bfc6c6',
+        height: '130px',
+        width: '670px',
+        opacity: '0.9',
+      },
+    ];
   } else {
     for (const key in forecast) {
       const tempValue = forecast[key].temp;
@@ -25,22 +40,27 @@ export const setBackgroundColor = (forecast, isCelsius) => {
         (!isCelsius && tempValueNumber < 95 && tempValueNumber > 54);
 
       if (tempValuehot) {
-        forecastDivColor = {
-          ...forecastDivColor,
-          [key]: 'forecastContainer__hot',
-        };
+        forecastDivColor = [
+          { backgroundColor: '#cb443d' },
+          { backgroundColor: '#d4645e' },
+          { backgroundColor: '#e29793' },
+        ];
       }
+
       if (tempValueCold) {
-        forecastDivColor = {
-          ...forecastDivColor,
-          [key]: 'forecastContainer__cold',
-        };
+        forecastDivColor = [
+          { backgroundColor: '#00a7ff' },
+          { backgroundColor: '#62c9ff' },
+          { backgroundColor: '#ade2ff' },
+        ];
       }
+
       if (tempValueDefault) {
-        forecastDivColor = {
-          ...forecastDivColor,
-          [key]: 'forecastContainer__default',
-        };
+        forecastDivColor = [
+          { backgroundColor: '#ffd400' },
+          { backgroundColor: '#ffe255' },
+          { backgroundColor: '#ffec92' },
+        ];
       }
     }
   }
