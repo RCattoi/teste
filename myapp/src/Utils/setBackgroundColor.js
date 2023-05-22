@@ -4,20 +4,14 @@ export const setBackgroundColor = (forecast, isCelsius) => {
     forecastDivColor = [
       {
         backgroundColor: '#7a8988',
-        height: '293px',
-        width: '670px',
         opacity: '0.9',
       },
       {
         backgroundColor: '#96a1a0',
-        height: '130px',
-        width: '670px',
         opacity: '0.9',
       },
       {
         backgroundColor: '#bfc6c6',
-        height: '130px',
-        width: '670px',
         opacity: '0.9',
       },
     ];

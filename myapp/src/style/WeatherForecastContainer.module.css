@@ -26,12 +26,14 @@ p {
 .forecastContainer__weatherWidget.today,
 .forecastContainer__noGeoLocation.today {
   height: 293px;
+  width: 670px;
 }
 .forecastContainer__weatherWidget.tomorrow,
 .forecastContainer__weatherWidget.dayAfterTomorrow,
 .forecastContainer__noGeoLocation.tomorrow,
 .forecastContainer__noGeoLocation.dayAfterTomorrow {
   height: 130px;
+  width: 670px;
 }
 
 [data-icon]::before {
@@ -99,13 +101,15 @@ p {
     place-items: center;
     height: 100px;
   }
-  .forecastContainer__noGeoLocation.today {
-    width: 363px;
-  }
+  .forecastContainer__weatherWidget.today,
+  .forecastContainer__weatherWidget.tomorrow,
+  .forecastContainer__weatherWidget.dayAfterTomorrow,
+  .forecastContainer__noGeoLocation.today,
   .forecastContainer__noGeoLocation.tomorrow,
   .forecastContainer__noGeoLocation.dayAfterTomorrow {
     width: 363px;
   }
+
   .forecastContainer__weatherWidget.today {
     height: 200px;
   }
@@ -130,6 +134,9 @@ p {
 }
 
 @media screen and (max-width: 400px) {
+  .forecastContainer__weatherWidget.today,
+  .forecastContainer__weatherWidget.tomorrow,
+  .forecastContainer__weatherWidget.dayAfterTomorrow,
   .forecastContainer__noGeoLocation.today,
   .forecastContainer__noGeoLocation.tomorrow,
   .forecastContainer__noGeoLocation.dayAfterTomorrow {
@@ -149,6 +156,9 @@ p {
 }
 
 @media screen and (max-width: 300px) {
+  .forecastContainer__weatherWidget.today,
+  .forecastContainer__weatherWidget.tomorrow,
+  .forecastContainer__weatherWidget.dayAfterTomorrow,
   .forecastContainer__noGeoLocation.today,
   .forecastContainer__noGeoLocation.tomorrow,
   .forecastContainer__noGeoLocation.dayAfterTomorrow,
