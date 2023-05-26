@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Background from './Components/Background.js';
 import Search from './Components/Search.js';
+
 import globalStyle from './style/globalStyle.css';
+
 function App() {
   return (
     <>

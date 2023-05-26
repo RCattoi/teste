@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useFetch from '../Hooks/useFetch.js';
 import getFormattedCurrentDate from '../Utils/formattedFullCurrentDate.js';
 
@@ -13,7 +13,7 @@ const Background = () => {
   };
 
   useEffect(() => {
-    async function setBackgroudImage() {
+    const setBackgroudImage = async () => {
       const imgLocalStoreDate = getLocalStorageValue().imageDateValue;
       if (imgLocalStoreDate !== getFormattedCurrentDate()) {
         const response = await request(`http://localhost:8080/bingImgAPI`);
@@ -28,9 +28,9 @@ const Background = () => {
           'bingImageUrl'
         )})`;
       }
-    }
+    };
     setBackgroudImage();
-  }, []);
+  }, [request]);
 
   return <></>;
 };

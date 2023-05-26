@@ -1,10 +1,10 @@
 const filterForecastData = (forecast) => {
-  function mpsToKph(mps) {
+  const mpsToKph = (mps) => {
     let kph = Math.round(mps * 3.6);
     return `${kph}km/h`;
-  }
+  };
 
-  function degToDirection(degrees) {
+  const degToDirection = (degrees) => {
     const directions = [
       'N',
       'NNE',
@@ -25,12 +25,13 @@ const filterForecastData = (forecast) => {
     ];
     const index = Math.round(degrees / 22.5) % 16;
     return directions[index];
-  }
-  function capitalizeFirstLetter(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }
+  };
 
-  function parseWeatherIcons(icon) {
+  const capitalizeFirstLetter = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
+
+  const parseWeatherIcons = (icon) => {
     const weatherIcons = {
       '01d': 'B',
       '01n': 'B',
@@ -56,28 +57,46 @@ const filterForecastData = (forecast) => {
         return correctIcon;
       }
     }
-  }
+  };
+
   if (forecast) {
+    const { icon: todayIcon, description: todayDescription } =
+      forecast[0].weather[0];
+
+    const {
+      pressure: todayPressure,
+      humidity: todayHumidity,
+      temp: todayTemp,
+    } = forecast[0].main;
+    const { deg: todayDeg, speed: todaySpeed } = forecast[0].wind;
+
+    const { icon: tomorrowIcon, description: tomorrowDescription } =
+      forecast[1].weather[0];
+    const { temp: tomorrowTemp } = forecast[1].main;
+
+    const {
+      icon: dayAfterTomorrowIcon,
+      description: dayAfterTomorrowDescription,
+    } = forecast[2].weather[0];
+    const { temp: dayAfterTomorrowIconTemp } = forecast[2].main;
     const formattedForecast = {
       today: {
-        icon: parseWeatherIcons(forecast[0].weather[0].icon),
-        temp: `${Math.round(forecast[0].main.temp)} °C`,
-        description: capitalizeFirstLetter(forecast[0].weather[0].description),
-        wind: `${degToDirection(forecast[0].wind.deg)} ${mpsToKph(
-          forecast[0].wind.speed
-        )}`,
-        pressure: `${forecast[0].main.pressure} hPA`,
-        humidity: `${forecast[0].main.humidity}%`,
+        icon: parseWeatherIcons(todayIcon),
+        temp: `${Math.round(todayTemp)} °C`,
+        description: capitalizeFirstLetter(todayDescription),
+        wind: `${degToDirection(todayDeg)} ${mpsToKph(todaySpeed)}`,
+        pressure: `${todayPressure} hPA`,
+        humidity: `${todayHumidity}%`,
       },
       tomorrow: {
-        icon: parseWeatherIcons(forecast[1].weather[0].icon),
-        temp: `${Math.round(forecast[1].main.temp)} °C`,
-        description: capitalizeFirstLetter(forecast[1].weather[0].description),
+        icon: parseWeatherIcons(tomorrowIcon),
+        temp: `${Math.round(tomorrowTemp)} °C`,
+        description: capitalizeFirstLetter(tomorrowDescription),
       },
       dayAfterTomorrow: {
-        icon: parseWeatherIcons(forecast[2].weather[0].icon),
-        temp: `${Math.round(forecast[2].main.temp)} °C`,
-        description: capitalizeFirstLetter(forecast[2].weather[0].description),
+        icon: parseWeatherIcons(dayAfterTomorrowIcon),
+        temp: `${Math.round(dayAfterTomorrowIconTemp)} °C`,
+        description: capitalizeFirstLetter(dayAfterTomorrowDescription),
       },
     };
     return formattedForecast;

@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import style from '../style/content.module.css';
 import { tempConverter } from '../Utils/temperatureConverter.js';
 import setBackgroundColor from '../Utils/setBackgroundColor.js';
 
-// import setBackgroundColor from '../Utils/setBackgroundColor';
+import style from '../style/WeatherForecastContainer.module.css';
 
 const WeatherForecastContainer = (props) => {
   const [isCelsius, setIsCelsius] = useState(props.isCelsius);
   const [forecast, setForecast] = useState(props.forecast);
-  const [forecastEmpty, setForecastEmpty] = useState({
+  const forecastEmpty = {
     today: '',
     tomorrow: '',
     dayAfterTomorrow: '',
-  });
-
+  };
   useEffect(() => {
     if (forecast) {
       setForecast(props.forecast);

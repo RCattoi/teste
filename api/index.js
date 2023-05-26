@@ -17,7 +17,7 @@ app.use(
 app.listen(PORT, () => console.log(`it's alive on http://localhost:${PORT}`));
 
 app.get('/bingImgAPI', (req, response) => {
-  async function handleBingImgData() {
+  const handleBingImgData = async () => {
     const resp = await fetch(
       'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=pt-US'
     );
@@ -27,6 +27,6 @@ app.get('/bingImgAPI', (req, response) => {
       imgUrl: url,
       imgStartDate: startdate,
     });
-  }
+  };
   handleBingImgData();
 });
