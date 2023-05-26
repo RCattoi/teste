@@ -47,13 +47,10 @@ const Search = () => {
     const setDefaultWeatherForecast = async () => {
       if (location) {
         const { latitude, longitude } = location;
-        // const geoLocationResponse = await request(
-        //   `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.REACT_APP_OPEN_CAGE_API_KEY}`
-        // );
-
         const geoLocationResponse = await request(
-          `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=4a4408f51dea4075bc35dcf06cf0bcd6`
+          `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.REACT_APP_OPEN_CAGE_API_KEY}`
         );
+
         const geoLocationCity =
           geoLocationResponse.json.results[0].components.city;
         setPlaceholderCity(geoLocationCity);
@@ -67,11 +64,8 @@ const Search = () => {
           const jsonForeCastLocalStorage = JSON.parse(foreCastLocalStorage);
           setData(jsonForeCastLocalStorage);
         } else {
-          // const weatherForecastResponse = await request(
-          //   `https://api.openweathermap.org/data/2.5/forecast?q=${formattedGeoLocationCity}&units=metric&lang=pt_br&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`
-          // );
           const weatherForecastResponse = await request(
-            `https://api.openweathermap.org/data/2.5/forecast?q=${formattedGeoLocationCity}&units=metric&lang=pt_br&appid=772920597e4ec8f00de8d376dfb3f094`
+            `https://api.openweathermap.org/data/2.5/forecast?q=${formattedGeoLocationCity}&units=metric&lang=pt_br&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`
           );
 
           setData(weatherForecastResponse.json);
@@ -103,11 +97,8 @@ const Search = () => {
           const jsonForeCastLocalStorage = JSON.parse(foreCastLocalStorage);
           setData(jsonForeCastLocalStorage);
         } else {
-          // const weatherForecastResponse = await request(
-          //   `https://api.openweathermap.org/data/2.5/forecast?q=${formattedSearchValue}&units=metric&lang=pt_br&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`
-          // );
           const weatherForecastResponse = await request(
-            `https://api.openweathermap.org/data/2.5/forecast?q=${formattedSearchValue}&units=metric&lang=pt_br&appid=772920597e4ec8f00de8d376dfb3f094`
+            `https://api.openweathermap.org/data/2.5/forecast?q=${formattedSearchValue}&units=metric&lang=pt_br&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`
           );
           setData(weatherForecastResponse.json);
           setErrorRequest(!weatherForecastResponse.json);
