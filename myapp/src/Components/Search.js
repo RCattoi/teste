@@ -26,13 +26,14 @@ const Search = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          setLocationEnable(true)
           setLocation({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           });
         },
         (error) => {
-          setLocationEnable(true);
+          setLocationEnable(false);
         }
       );
     } else {
@@ -45,7 +46,7 @@ const Search = () => {
 
   useEffect(() => {
     const setDefaultWeatherForecast = async () => {
-      if (location) {
+      if (location && location.latitude && location.longitude) {
         const { latitude, longitude } = location;
         const geoLocationResponse = await request(
           `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${process.env.REACT_APP_OPEN_CAGE_API_KEY}`
@@ -77,7 +78,7 @@ const Search = () => {
       }
     };
     setDefaultWeatherForecast();
-  }, [location, request]);
+  }, [location]);
 
   function handleChange(event) {
     setSearchValue(event.target.value);
@@ -113,7 +114,7 @@ const Search = () => {
   }, [debouncedSearchValue, request]);
 
   function handleClick() {
-    setLocationEnable(false);
+    setLocationEnable(true);
     setErrorRequest(false);
   }
   return (
@@ -121,7 +122,7 @@ const Search = () => {
       {errorRequest && (
         <Error name={'Cidade não encontrada, pesquise novamente!'} />
       )}
-      {LocationEnable && (
+      {!LocationEnable && (
         <Error
           name={'Para melhor Utilizar o serviço, ative a geolocalização!'}
         />
